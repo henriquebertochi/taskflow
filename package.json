@@ -1,0 +1,13 @@
+{
+  "name": "taskflow",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev -w @taskflow/backend",
+    "db:up": "docker compose up -d",
+    "db:migrate": "npm run migrate -w @taskflow/backend",
+    "test": "npm test --workspaces --if-present"
+  }
+}
