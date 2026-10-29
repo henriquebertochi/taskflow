@@ -5,7 +5,7 @@ Gestor de compromissos para trabalhos em grupo. Monorepo com npm workspaces:
 ```
 apps/
   backend/   API em Express + PostgreSQL (TypeScript)
-  frontend/  (próximo passo)
+  frontend/  React + TypeScript + Vite + shadcn/ui
 ```
 
 ## Rodando
@@ -18,6 +18,7 @@ npm run db:up                       # Postgres (5432) + Mailpit (SMTP 1025, UI h
 cp apps/backend/.env.example apps/backend/.env
 npm run db:migrate
 npm run dev:backend                 # http://localhost:3333
+npm run dev:frontend                # http://localhost:5173 (proxy de /api para o backend)
 npm test                            # usa o banco taskflow_test
 ```
 
@@ -70,3 +71,24 @@ Todas as rotas respondem erros no mesmo formato:
 
 Novas rotas internas devem usar o middleware `requireAuth`
 (`apps/backend/src/middleware/auth.ts`).
+
+## Frontend (`apps/frontend`)
+
+React 19 + TypeScript + Vite, Tailwind v4 e shadcn/ui (componentes copiados para
+`src/components/ui`, então o código é nosso). Formulários com react-hook-form + zod; testes com
+Vitest, Testing Library e MSW (`npm test -w @taskflow/frontend`).
+
+Rotas: `/login`, `/cadastro`, `/esqueci-senha`, `/redefinir-senha?token=…` (caminho fixo, é o link
+do e-mail) e `/` (protegida).
+
+**Design system centralizado** — ainda sem specs de design, então tudo é neutro e mora em dois lugares:
+
+- `src/styles/theme.css`: tokens (cores, raio, fonte; claro e escuro). Trocar a identidade visual = editar só este arquivo.
+- `src/config/brand.ts` + `src/components/logo.tsx`: nome, slogan e logo.
+
+Os componentes usam apenas tokens semânticos (`bg-primary`, `text-muted-foreground`…); não
+usar cores cruas. Novos componentes: `npx shadcn@latest add <nome>` dentro de `apps/frontend`.
+
+**Sessão:** o backend usa Bearer token, então o token fica em `localStorage`
+(`taskflow:session`), legível por qualquer script da página (risco de XSS). Um 401 em rota
+protegida encerra a sessão local. Em produção, defina `VITE_API_URL` se a API não for servida em `/api`.
