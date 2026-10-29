@@ -6,6 +6,8 @@
   ],
   "scripts": {
     "dev:backend": "npm run dev -w @taskflow/backend",
+    "dev:frontend": "npm run dev -w @taskflow/frontend",
+    "build:frontend": "npm run build -w @taskflow/frontend",
     "db:up": "docker compose up -d",
     "db:migrate": "npm run migrate -w @taskflow/backend",
     "test": "npm test --workspaces --if-present"
