@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { requireAuth } from "../../middleware/auth.js";
 import { requireGroupCreator, requireGroupMember } from "../../middleware/group-access.js";
+import { tasksRouter } from "../tasks/tasks.routes.js";
 import { createGroupSchema } from "./groups.schemas.js";
 import * as groups from "./groups.service.js";
 
@@ -30,3 +31,5 @@ groupsRouter.get("/:id/members", async (req, res) => {
 groupsRouter.post("/:id/invite", requireGroupCreator, async (req, res) => {
   res.json({ inviteCode: await groups.regenerateInviteCode(req.group!.id) });
 });
+
+groupsRouter.use("/:id/tasks", tasksRouter);
