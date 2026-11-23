@@ -40,7 +40,7 @@ export function GroupsPage() {
         <EmptyState
           icon={<UsersIcon />}
           title="Você ainda não participa de nenhum grupo"
-          description="Crie um grupo para o seu trabalho ou peça o link de convite a um colega."
+          description="Crie um grupo ou solicite um link de convite a um integrante."
           action={
             <Button asChild>
               <Link to="/grupos/novo">

@@ -21,7 +21,7 @@ function InvalidInvite() {
   return (
     <AuthLayout
       title="Convite inválido ou expirado"
-      description="Peça a um integrante do grupo o link de convite atualizado."
+      description="Solicite um novo link de convite a um integrante do grupo."
     >
       <Button className="w-full" asChild>
         <Link to="/">Ir para o início</Link>

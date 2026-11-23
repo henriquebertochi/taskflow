@@ -27,7 +27,7 @@ export function InviteCard({ group }: { group: Group }) {
       queryClient.setQueryData<{ group: Group }>(groupKeys.detail(group.id), (old) =>
         old ? { group: { ...old.group, inviteCode } } : old,
       )
-      toast.success("Novo link gerado. O link anterior não funciona mais.")
+      toast.success("Novo link gerado. O link anterior foi desativado.")
     },
     onError: (error) =>
       toast.error(error instanceof ApiError ? error.message : "Não foi possível gerar um novo link."),
@@ -37,9 +37,9 @@ export function InviteCard({ group }: { group: Group }) {
     const url = inviteUrl(group.inviteCode)
     try {
       await navigator.clipboard.writeText(url)
-      toast.success("Link de convite copiado. Agora é só colar no grupo da turma.")
+      toast.success("Link de convite copiado")
     } catch {
-      toast.info(`Copie o link: ${url}`, { duration: 15000 })
+      toast.info(`Não foi possível copiar automaticamente. Link: ${url}`, { duration: 15000 })
     }
   }
 
@@ -47,9 +47,9 @@ export function InviteCard({ group }: { group: Group }) {
     <Card size="sm">
       <CardHeader>
         <CardTitle role="heading" aria-level={2}>
-          Convidar colegas
+          Convidar integrantes
         </CardTitle>
-        <CardDescription>Envie o link (por exemplo, no WhatsApp) para quem vai participar do trabalho.</CardDescription>
+        <CardDescription>Compartilhe este link com as pessoas que devem participar do grupo.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
         <Button onClick={() => void copy()}>
