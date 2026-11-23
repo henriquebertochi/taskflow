@@ -89,7 +89,7 @@ export function TaskBoard({ groupId, tasks, onEdit, onDelete }: TaskBoardProps) 
       onDragEnd={handleDragEnd}
       onDragCancel={() => setDragging(null)}
     >
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-3 md:gap-4">
         {STATUSES.map((column) => (
           <BoardColumn
             key={column.value}
@@ -101,7 +101,7 @@ export function TaskBoard({ groupId, tasks, onEdit, onDelete }: TaskBoardProps) 
         ))}
       </div>
       <DragOverlay dropAnimation={null}>
-        {dragging && <div data-drag-overlay className="rotate-2 cursor-grabbing shadow-lg">{renderCard(dragging)}</div>}
+        {dragging && <div data-drag-overlay className="rotate-1 cursor-grabbing rounded-xl shadow-[0_8px_24px_rgb(0_0_0/0.12)]">{renderCard(dragging)}</div>}
       </DragOverlay>
     </DndContext>
   )
@@ -122,18 +122,18 @@ function BoardColumn({ status, label, tasks, renderCard }: BoardColumnProps) {
       aria-labelledby={`column-${status}`}
       data-status={status}
       data-over={isOver}
-      className="flex min-w-0 flex-col gap-3 rounded-xl bg-muted/50 p-3 ring-primary/40 transition-shadow data-[over=true]:ring-2"
+      className="-m-2 flex min-w-0 flex-col gap-3 rounded-2xl p-2 transition-colors duration-150 data-[over=true]:bg-primary/8 data-[over=true]:ring-1 data-[over=true]:ring-primary/30"
     >
-      <h3 id={`column-${status}`} className="flex items-center justify-between text-sm font-medium">
+      <h3 id={`column-${status}`} className="flex items-center gap-2 border-b pb-2 text-sm font-medium">
         {label}
-        <span className="rounded-full bg-background px-2 text-xs text-muted-foreground">{tasks.length}</span>
+        <span className="font-mono text-xs text-muted-foreground tabular-nums">{tasks.length}</span>
       </h3>
       {tasks.length === 0 ? (
-        <p className="py-4 text-center text-sm text-muted-foreground">
+        <p className="rounded-xl border border-dashed py-6 text-center text-sm text-muted-foreground">
           {isOver ? "Solte aqui" : "Nenhuma tarefa"}
         </p>
       ) : (
-        <ul className="flex flex-col gap-3">
+        <ul className="flex flex-col gap-2">
           {tasks.map((task) => (
             <li key={task.id}>
               <DraggableCard task={task}>{renderCard(task)}</DraggableCard>

@@ -37,7 +37,7 @@ export function RegisterPage() {
   return (
     <AuthLayout
       title="Criar conta"
-      description="Informe seus dados para começar"
+      description="Crie sua conta para participar de um grupo"
       footer={
         <span>
           Já tem conta?&nbsp;

@@ -55,10 +55,10 @@ export function GroupPage() {
           <ArrowLeftIcon className="size-4" />
           Meus grupos
         </Link>
-        <h1 className="text-2xl font-semibold break-words">{group.name}</h1>
+        <h1 className="text-2xl font-medium break-words sm:text-3xl">{group.name}</h1>
         {group.description && <p className="whitespace-pre-line text-muted-foreground">{group.description}</p>}
       </div>
-      <div className="grid gap-6 xl:grid-cols-[1fr_16rem]">
+      <div className="grid gap-8 xl:grid-cols-[1fr_17rem]">
         <section aria-label="Tarefas" className="min-w-0">
           <TasksSection groupId={group.id} />
         </section>

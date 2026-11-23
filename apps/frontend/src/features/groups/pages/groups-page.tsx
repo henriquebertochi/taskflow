@@ -17,7 +17,7 @@ export function GroupsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold">Meus grupos</h1>
+        <h1 className="text-2xl font-medium sm:text-3xl">Meus grupos</h1>
         {groups && groups.length > 0 && (
           <Button asChild>
             <Link to="/grupos/novo">
@@ -58,7 +58,7 @@ export function GroupsPage() {
                 to={`/grupos/${group.id}`}
                 className="block h-full rounded-xl outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
               >
-                <Card className="h-full transition-colors hover:bg-muted/50">
+                <Card className="h-full transition-[box-shadow,background-color] duration-150 hover:ring-foreground/20 hover:bg-muted/40">
                   <CardHeader>
                     <CardTitle className="flex items-start justify-between gap-2">
                       <span className="break-words">{group.name}</span>
@@ -66,7 +66,7 @@ export function GroupsPage() {
                     </CardTitle>
                     {group.description && <CardDescription className="line-clamp-2">{group.description}</CardDescription>}
                     <CardDescription className="flex items-center gap-1.5">
-                      <UsersIcon className="size-3.5" />
+                      <UsersIcon className="size-4" />
                       {group.memberCount} {group.memberCount === 1 ? "integrante" : "integrantes"}
                     </CardDescription>
                   </CardHeader>

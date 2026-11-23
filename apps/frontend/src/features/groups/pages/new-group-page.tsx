@@ -40,7 +40,7 @@ export function NewGroupPage() {
   return (
     <Card className="mx-auto w-full max-w-lg">
       <CardHeader>
-        <CardTitle role="heading" aria-level={1}>
+        <CardTitle role="heading" aria-level={1} className="text-lg font-medium">
           Criar grupo
         </CardTitle>
         <CardDescription>Organize as tarefas, os responsáveis e os prazos de um projeto em um só lugar.</CardDescription>

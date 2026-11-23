@@ -6,17 +6,17 @@ import type { TaskSummary } from "@/lib/api/tasks"
 export function ProgressSummary({ summary }: { summary: TaskSummary }) {
   const { total, done, overdue, percentDone } = summary
   return (
-    <div className="flex flex-col gap-2 rounded-xl border p-4" aria-live="polite">
+    <div className="flex flex-col gap-3 rounded-xl bg-card p-4 ring-1 ring-foreground/10" aria-live="polite">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <p>
-          <span className="text-2xl font-semibold">{percentDone}%</span>{" "}
+          <span className="text-3xl font-medium tabular-nums">{percentDone}%</span>{" "}
           <span className="text-muted-foreground">concluído</span>
         </p>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground tabular-nums">
           {done} de {total} {total === 1 ? "tarefa concluída" : "tarefas concluídas"}
         </p>
       </div>
-      <Progress value={percentDone} aria-label="Progresso do grupo" />
+      <Progress value={percentDone} aria-label="Progresso do grupo" className="h-1.5" />
       <p
         data-overdue={overdue > 0}
         className="flex items-center gap-1.5 text-sm text-muted-foreground data-[overdue=true]:font-medium data-[overdue=true]:text-destructive"

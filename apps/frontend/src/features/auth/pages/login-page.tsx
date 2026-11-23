@@ -32,7 +32,7 @@ export function LoginPage() {
   return (
     <AuthLayout
       title="Entrar"
-      description="Acesse sua conta com e-mail e senha"
+      description="Acompanhe as tarefas, os responsáveis e os prazos do seu grupo"
       footer={
         <span>
           Não tem conta?&nbsp;

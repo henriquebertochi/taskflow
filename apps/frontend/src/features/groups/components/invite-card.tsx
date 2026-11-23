@@ -52,14 +52,14 @@ export function InviteCard({ group }: { group: Group }) {
         <CardDescription>Compartilhe este link com as pessoas que devem participar do grupo.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        <Button onClick={() => void copy()}>
+        <Button variant="outline" onClick={() => void copy()}>
           <CopyIcon data-icon="inline-start" />
           Copiar convite
         </Button>
         {group.role === "creator" && (
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="outline" disabled={regenerate.isPending}>
+              <Button variant="ghost" disabled={regenerate.isPending}>
                 <RefreshCwIcon data-icon="inline-start" />
                 Gerar novo link
               </Button>
