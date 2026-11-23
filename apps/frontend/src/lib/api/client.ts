@@ -26,7 +26,7 @@ export function setUnauthenticatedHandler(handler: () => void) {
 }
 
 type RequestOptions = {
-  method?: "GET" | "POST"
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
   body?: unknown
   /** Envia o Bearer token da sessão. */
   auth?: boolean

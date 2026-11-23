@@ -66,11 +66,27 @@ Todas as rotas respondem erros no mesmo formato:
 | 401 | `INVALID_CREDENTIALS` | "E-mail ou senha inválidos" |
 | 401 | `UNAUTHENTICATED` | Rota protegida sem token ou com sessão expirada |
 | 409 | `EMAIL_TAKEN` | E-mail já cadastrado |
+| 403 | `FORBIDDEN` | Ação permitida só a quem criou o grupo |
+| 404 | `GROUP_NOT_FOUND` | "Grupo não encontrado": não existe ou o usuário não é integrante |
 | 404 | `NOT_FOUND` | Rota inexistente |
 | 500 | `INTERNAL_ERROR` | Erro inesperado |
 
 Novas rotas internas devem usar o middleware `requireAuth`
 (`apps/backend/src/middleware/auth.ts`).
+
+## API — Sprint 2 (grupos e tarefas)
+
+Todas as rotas exigem login. Toda rota `/groups/:id/...` passa pelo middleware
+`requireGroupMember` (`apps/backend/src/middleware/group-access.ts`): quem não é integrante
+recebe `404 GROUP_NOT_FOUND`, a mesma resposta de um grupo inexistente.
+
+### Grupos (RF05)
+
+| Método | Rota | Descrição |
+|---|---|---|
+| POST | `/groups` | `{ name, description? }` (nome até 60 caracteres) → 201 `{ group }`; quem cria entra como `creator` |
+| GET | `/groups` | `{ groups: [{ id, name, description, role, memberCount, createdAt }] }`, só os grupos do usuário |
+| GET | `/groups/:id` | `{ group: { id, name, description, inviteCode, role, createdAt } }` |
 
 ## Frontend (`apps/frontend`)
 
@@ -79,7 +95,7 @@ React 19 + TypeScript + Vite, Tailwind v4 e shadcn/ui (componentes copiados para
 Vitest, Testing Library e MSW (`npm test -w @taskflow/frontend`).
 
 Rotas: `/login`, `/cadastro`, `/esqueci-senha`, `/redefinir-senha?token=…` (caminho fixo, é o link
-do e-mail) e `/` (protegida).
+do e-mail) e as protegidas `/` (Meus grupos), `/grupos/novo` e `/grupos/:id`.
 
 **Design system centralizado** — ainda sem specs de design, então tudo é neutro e mora em dois lugares:
 

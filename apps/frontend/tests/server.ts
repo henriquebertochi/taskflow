@@ -1,3 +1,6 @@
+import { http, HttpResponse } from "msw"
 import { setupServer } from "msw/node"
+import { API } from "./fixtures"
 
-export const server = setupServer()
+// Respostas padrão; cada teste sobrescreve com server.use(...).
+export const server = setupServer(http.get(`${API}/groups`, () => HttpResponse.json({ groups: [] })))

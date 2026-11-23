@@ -1,10 +1,13 @@
 import { createBrowserRouter, Navigate, type RouteObject } from "react-router"
+import { AppLayout } from "@/components/app-layout"
 import { GuestRoute, ProtectedRoute } from "@/components/route-guards"
 import { ForgotPasswordPage } from "@/features/auth/pages/forgot-password-page"
 import { LoginPage } from "@/features/auth/pages/login-page"
 import { RegisterPage } from "@/features/auth/pages/register-page"
 import { ResetPasswordPage } from "@/features/auth/pages/reset-password-page"
-import { HomePage } from "@/features/home/home-page"
+import { GroupPage } from "@/features/groups/pages/group-page"
+import { GroupsPage } from "@/features/groups/pages/groups-page"
+import { NewGroupPage } from "@/features/groups/pages/new-group-page"
 
 // Exportado separado para os testes montarem com createMemoryRouter.
 export const routes: RouteObject[] = [
@@ -19,7 +22,19 @@ export const routes: RouteObject[] = [
   { path: "/esqueci-senha", element: <ForgotPasswordPage /> },
   // Caminho fixo: o backend monta o link como ${APP_URL}/redefinir-senha?token=...
   { path: "/redefinir-senha", element: <ResetPasswordPage /> },
-  { element: <ProtectedRoute />, children: [{ path: "/", element: <HomePage /> }] },
+  {
+    element: <ProtectedRoute />,
+    children: [
+      {
+        element: <AppLayout />,
+        children: [
+          { path: "/", element: <GroupsPage /> },
+          { path: "/grupos/novo", element: <NewGroupPage /> },
+          { path: "/grupos/:groupId", element: <GroupPage /> },
+        ],
+      },
+    ],
+  },
   { path: "*", element: <Navigate to="/" replace /> },
 ]
 

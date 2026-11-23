@@ -3,6 +3,7 @@ import express from "express";
 import { config } from "./config.js";
 import { errorHandler, notFoundHandler } from "./lib/errors.js";
 import { authRouter } from "./modules/auth/auth.routes.js";
+import { groupsRouter } from "./modules/groups/groups.routes.js";
 
 export const app = express();
 
@@ -19,8 +20,7 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.use("/api/auth", authRouter);
-// Rotas internas (grupos, tarefas...) dos próximos sprints entram aqui,
-// protegidas com requireAuth.
+app.use("/api/groups", groupsRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

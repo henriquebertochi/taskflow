@@ -26,7 +26,7 @@ describe("rotas protegidas", () => {
   it("redireciona usuário logado que abre o login", async () => {
     storeSession()
     renderApp("/login")
-    expect(await screen.findByText("Olá, Ana Souza")).toBeInTheDocument()
+    expect(await screen.findByRole("heading", { name: "Meus grupos" })).toBeInTheDocument()
   })
 
   it("ignora sessão expirada guardada", async () => {
@@ -51,7 +51,7 @@ describe("login", () => {
     await u.type(screen.getByLabelText("E-mail"), "ana@example.com")
     await u.type(screen.getByLabelText("Senha"), "12345678")
     await u.click(screen.getByRole("button", { name: "Entrar" }))
-    expect(await screen.findByText("Olá, Ana Souza")).toBeInTheDocument()
+    expect(await screen.findByRole("heading", { name: "Meus grupos" })).toBeInTheDocument()
     expect(JSON.parse(localStorage.getItem("taskflow:session")!).token).toBe("tok")
   })
 

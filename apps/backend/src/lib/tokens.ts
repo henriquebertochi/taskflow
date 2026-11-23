@@ -7,3 +7,8 @@ export function generateToken() {
 export function hashToken(token: string) {
   return createHash("sha256").update(token).digest("hex");
 }
+
+// Código curto e não adivinhável para links de convite (vai na URL).
+export function generateInviteCode() {
+  return randomBytes(12).toString("base64url");
+}
