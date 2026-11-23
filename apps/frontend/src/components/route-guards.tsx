@@ -9,9 +9,13 @@ export function ProtectedRoute() {
   return <Outlet />
 }
 
-// Telas de login/cadastro: quem já está logado vai direto para o início.
+// Telas de login/cadastro: quem já está logado vai para o destino guardado (ex.: convite) ou o início.
 export function GuestRoute() {
   const { isAuthenticated } = useAuth()
-  if (isAuthenticated) return <Navigate to="/" replace />
+  const location = useLocation()
+  if (isAuthenticated) {
+    const from = (location.state as { from?: string } | null)?.from
+    return <Navigate to={from ?? "/"} replace />
+  }
   return <Outlet />
 }

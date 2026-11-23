@@ -1,5 +1,5 @@
 import { ChevronDownIcon, LogOutIcon } from "lucide-react"
-import { useNavigate } from "react-router"
+import { Link, Outlet, useNavigate } from "react-router"
 import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/lib/auth/auth-context"
 
-// Placeholder da área logada: valida a proteção de rotas e o logout enquanto não há outras telas.
-export function HomePage() {
+// Moldura da área logada: cabeçalho com logo, tema e menu do usuário.
+export function AppLayout() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
@@ -25,15 +25,17 @@ export function HomePage() {
   }
 
   return (
-    <div className="min-h-svh">
-      <header className="flex items-center justify-between border-b px-6 py-3">
-        <Logo />
-        <div className="flex items-center gap-2">
+    <div className="flex min-h-svh flex-col">
+      <header className="flex items-center justify-between gap-2 border-b px-4 py-3 sm:px-6">
+        <Link to="/" aria-label="Ir para Meus grupos">
+          <Logo />
+        </Link>
+        <div className="flex min-w-0 items-center gap-2">
           <ThemeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                {user?.name}
+              <Button variant="outline" className="min-w-0">
+                <span className="truncate">{user?.name}</span>
                 <ChevronDownIcon data-icon="inline-end" />
               </Button>
             </DropdownMenuTrigger>
@@ -50,9 +52,8 @@ export function HomePage() {
           </DropdownMenu>
         </div>
       </header>
-      <main className="p-6">
-        <h1 className="text-2xl font-semibold">Olá, {user?.name}</h1>
-        <p className="text-muted-foreground">Os compromissos do seu grupo aparecerão aqui.</p>
+      <main className="mx-auto w-full max-w-6xl flex-1 p-4 sm:p-6">
+        <Outlet />
       </main>
     </div>
   )

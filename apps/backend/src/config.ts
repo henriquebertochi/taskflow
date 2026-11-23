@@ -17,6 +17,8 @@ export const config = {
   appUrl: process.env.APP_URL ?? "http://localhost:5173",
   sessionTtlHours: Number(process.env.SESSION_TTL_HOURS ?? 168),
   resetTokenTtlMinutes: Number(process.env.RESET_TOKEN_TTL_MINUTES ?? 60),
+  // Fuso usado para decidir o que é "hoje" (prazo passado, tarefa atrasada).
+  timezone: process.env.APP_TIMEZONE ?? "America/Sao_Paulo",
   smtp: {
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT ?? 1025),
