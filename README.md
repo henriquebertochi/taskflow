@@ -25,6 +25,13 @@ npm test                            # usa o banco taskflow_test
 Os e-mails de recuperação de senha enviados em desenvolvimento aparecem no Mailpit
 (http://localhost:8025).
 
+## CI/CD (GitHub Actions)
+
+`.github/workflows/ci.yml` roda em todo pull request e em todo push na `main`: sobe um PostgreSQL,
+executa os testes do backend e do frontend, o lint e o build. Em push na `main`, se tudo passar,
+dispara o deploy no Render pelo deploy hook (secret `RENDER_DEPLOY_HOOK` do repositório). O
+auto-deploy do próprio Render fica desligado, então só vai para o ar o que passou no CI.
+
 ## Deploy (Render + Neon)
 
 Um único serviço web no Render entrega a API e o frontend; o banco é PostgreSQL no Neon.
