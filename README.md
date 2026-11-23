@@ -25,6 +25,23 @@ npm test                            # usa o banco taskflow_test
 Os e-mails de recuperação de senha enviados em desenvolvimento aparecem no Mailpit
 (http://localhost:8025).
 
+## Deploy (Render + Neon)
+
+Um único serviço web no Render entrega a API e o frontend; o banco é PostgreSQL no Neon.
+
+| Render | Valor |
+|---|---|
+| Build command | `npm ci --include=dev && npm run build` |
+| Start command | `npm start` (aplica as migrations pendentes e sobe a API) |
+| Health check | `/api/health` |
+
+Variáveis: `DATABASE_URL` (connection string do Neon, com `sslmode=require`), `SERVE_FRONTEND=true`,
+`APP_URL` e `CORS_ORIGIN` (ambas com a URL pública do serviço) e, para a recuperação de senha,
+`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` e `MAIL_FROM`.
+
+Com `SERVE_FRONTEND=true`, a API serve `apps/frontend/dist`: `/api/*` continua sendo a API e qualquer
+outra rota devolve o `index.html` (rotas do React como `/grupos/1` e `/convite/:código`).
+
 ## API — Sprint 1 (autenticação)
 
 Base: `/api`. A autenticação usa token de sessão no header
