@@ -43,7 +43,7 @@ export function NewGroupPage() {
         <CardTitle role="heading" aria-level={1}>
           Criar grupo
         </CardTitle>
-        <CardDescription>Um grupo para cada trabalho: depois é só convidar os colegas.</CardDescription>
+        <CardDescription>Organize as tarefas, os responsáveis e os prazos de um projeto em um só lugar.</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={onSubmit} noValidate>

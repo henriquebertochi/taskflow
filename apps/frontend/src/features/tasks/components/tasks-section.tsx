@@ -48,7 +48,7 @@ export function TasksSection({ groupId }: { groupId: number }) {
         <EmptyState
           icon={<ClipboardListIcon />}
           title="Nenhuma tarefa ainda"
-          description="Divida o trabalho em partes e defina quem faz cada uma e até quando."
+          description="Crie tarefas e defina o responsável e o prazo de cada uma."
           action={newTaskButton}
         />
       ) : (
