@@ -8,8 +8,13 @@
     "dev:backend": "npm run dev -w @taskflow/backend",
     "dev:frontend": "npm run dev -w @taskflow/frontend",
     "build:frontend": "npm run build -w @taskflow/frontend",
+    "build": "npm run build -w @taskflow/backend && npm run build -w @taskflow/frontend",
+    "start": "npm run migrate:prod -w @taskflow/backend && npm start -w @taskflow/backend",
     "db:up": "docker compose up -d",
     "db:migrate": "npm run migrate -w @taskflow/backend",
     "test": "npm test --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

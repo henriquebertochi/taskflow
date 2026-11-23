@@ -15,6 +15,9 @@ export const config = {
   databaseUrl: required("DATABASE_URL"),
   corsOrigin: process.env.CORS_ORIGIN ?? "http://localhost:5173",
   appUrl: process.env.APP_URL ?? "http://localhost:5173",
+  // Produção (SERVE_FRONTEND=true): a API também entrega o build do frontend no mesmo endereço.
+  // Em dev fica desligado: o Vite serve o frontend.
+  serveFrontend: process.env.SERVE_FRONTEND === "true",
   sessionTtlHours: Number(process.env.SESSION_TTL_HOURS ?? 168),
   resetTokenTtlMinutes: Number(process.env.RESET_TOKEN_TTL_MINUTES ?? 60),
   // Fuso usado para decidir o que é "hoje" (prazo passado, tarefa atrasada).
