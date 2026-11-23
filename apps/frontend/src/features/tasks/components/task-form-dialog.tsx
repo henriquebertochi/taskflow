@@ -1,8 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { toast } from "sonner"
+import { DatePickerField } from "@/components/date-picker-field"
 import { FormAlert } from "@/components/form-alert"
 import { SelectField } from "@/components/select-field"
 import { SubmitButton } from "@/components/submit-button"
@@ -73,6 +74,7 @@ function TaskForm({ groupId, members, task, onOpenChange }: TaskFormDialogProps)
   })
 
   const today = todayISO()
+  const dueDate = useWatch({ control: form.control, name: "dueDate" })
   return (
     <form onSubmit={onSubmit} noValidate>
       <FieldGroup>
@@ -87,11 +89,12 @@ function TaskForm({ groupId, members, task, onOpenChange }: TaskFormDialogProps)
             </NativeSelectOption>
           ))}
         </SelectField>
-        <TextField
+        <DatePickerField
           label="Prazo"
-          type="date"
           min={task && task.dueDate < today ? task.dueDate : today}
           error={errors.dueDate}
+          value={dueDate}
+          onPick={(iso) => form.setValue("dueDate", iso, { shouldValidate: true, shouldDirty: true, shouldTouch: true })}
           {...form.register("dueDate")}
         />
         <div className="flex flex-col-reverse gap-2 sm:flex-row">
