@@ -7,6 +7,7 @@ import { RegisterPage } from "@/features/auth/pages/register-page"
 import { ResetPasswordPage } from "@/features/auth/pages/reset-password-page"
 import { GroupPage } from "@/features/groups/pages/group-page"
 import { GroupsPage } from "@/features/groups/pages/groups-page"
+import { InvitePage } from "@/features/invites/invite-page"
 import { NewGroupPage } from "@/features/groups/pages/new-group-page"
 
 // Exportado separado para os testes montarem com createMemoryRouter.
@@ -22,6 +23,8 @@ export const routes: RouteObject[] = [
   { path: "/esqueci-senha", element: <ForgotPasswordPage /> },
   // Caminho fixo: o backend monta o link como ${APP_URL}/redefinir-senha?token=...
   { path: "/redefinir-senha", element: <ResetPasswordPage /> },
+  // Link de convite (RF06): sem login mostra o grupo e leva ao login/cadastro com volta para cá.
+  { path: "/convite/:code", element: <InvitePage /> },
   {
     element: <ProtectedRoute />,
     children: [

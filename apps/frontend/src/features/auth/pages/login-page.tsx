@@ -36,7 +36,7 @@ export function LoginPage() {
       footer={
         <span>
           Não tem conta?&nbsp;
-          <Link to="/cadastro" className="text-foreground underline underline-offset-4">
+          <Link to="/cadastro" state={location.state} className="text-foreground underline underline-offset-4">
             Cadastre-se
           </Link>
         </span>

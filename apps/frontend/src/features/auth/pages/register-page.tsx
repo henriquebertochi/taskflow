@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { Link, useNavigate } from "react-router"
+import { Link, useLocation, useNavigate } from "react-router"
 import { toast } from "sonner"
 import { AuthLayout } from "@/components/auth-layout"
 import { FormAlert } from "@/components/form-alert"
@@ -14,6 +14,7 @@ import { registerSchema, type RegisterValues } from "../schemas"
 
 export function RegisterPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [formError, setFormError] = useState<string | null>(null)
   const form = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
@@ -26,7 +27,8 @@ export function RegisterPage() {
     try {
       await authApi.register(values)
       toast.success("Conta criada com sucesso. Faça login para continuar.")
-      navigate("/login", { replace: true })
+      // Mantém o destino guardado (ex.: link de convite) para depois do login.
+      navigate("/login", { replace: true, state: location.state })
     } catch (error) {
       setFormError(applyApiError(form, error))
     }
@@ -39,7 +41,7 @@ export function RegisterPage() {
       footer={
         <span>
           Já tem conta?&nbsp;
-          <Link to="/login" className="text-foreground underline underline-offset-4">
+          <Link to="/login" state={location.state} className="text-foreground underline underline-offset-4">
             Entrar
           </Link>
         </span>

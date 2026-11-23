@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ApiError } from "@/lib/api/client"
 import { groupKeys, groupsApi } from "@/lib/api/groups"
+import { InviteCard } from "../components/invite-card"
+import { MembersCard } from "../components/members-card"
 
-// Página do grupo (RF05). Integrantes (RF06) e quadro de tarefas (RF08) entram aqui.
+// Página do grupo (RF05): convite e integrantes (RF06) ao lado do quadro de tarefas (RF08).
 export function GroupPage() {
   const { groupId = "" } = useParams()
   const query = useQuery({ queryKey: groupKeys.detail(groupId), queryFn: () => groupsApi.get(groupId) })
@@ -54,6 +56,13 @@ export function GroupPage() {
         </Link>
         <h1 className="text-2xl font-semibold break-words">{group.name}</h1>
         {group.description && <p className="whitespace-pre-line text-muted-foreground">{group.description}</p>}
+      </div>
+      <div className="grid gap-6 lg:grid-cols-[1fr_18rem]">
+        <section aria-label="Tarefas" className="min-w-0" />
+        <aside className="flex flex-col gap-4">
+          <InviteCard group={group} />
+          <MembersCard groupId={group.id} />
+        </aside>
       </div>
     </div>
   )

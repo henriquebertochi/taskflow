@@ -65,3 +65,22 @@ export async function listGroups(userId: number) {
     createdAt: r.created_at,
   }));
 }
+
+// Integrantes pelo nome; o criador primeiro, depois por ordem de entrada.
+export async function listMembers(groupId: number) {
+  const { rows } = await pool.query(
+    `SELECT u.id, u.name, m.role, m.joined_at
+       FROM group_members m JOIN users u ON u.id = m.user_id
+      WHERE m.group_id = $1
+      ORDER BY (m.role = 'creator') DESC, m.joined_at, u.id`,
+    [groupId],
+  );
+  return rows.map((r) => ({ id: r.id, name: r.name, role: r.role, joinedAt: r.joined_at }));
+}
+
+// Gera um novo link de convite; o anterior deixa de funcionar (RF06).
+export async function regenerateInviteCode(groupId: number) {
+  const inviteCode = generateInviteCode();
+  await pool.query("UPDATE groups SET invite_code = $1 WHERE id = $2", [inviteCode, groupId]);
+  return inviteCode;
+}
