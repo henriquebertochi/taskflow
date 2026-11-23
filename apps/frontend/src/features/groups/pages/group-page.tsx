@@ -6,6 +6,7 @@ import { QueryError } from "@/components/query-error"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ApiError } from "@/lib/api/client"
+import { TasksSection } from "@/features/tasks/components/tasks-section"
 import { groupKeys, groupsApi } from "@/lib/api/groups"
 import { InviteCard } from "../components/invite-card"
 import { MembersCard } from "../components/members-card"
@@ -58,7 +59,9 @@ export function GroupPage() {
         {group.description && <p className="whitespace-pre-line text-muted-foreground">{group.description}</p>}
       </div>
       <div className="grid gap-6 lg:grid-cols-[1fr_18rem]">
-        <section aria-label="Tarefas" className="min-w-0" />
+        <section aria-label="Tarefas" className="min-w-0">
+          <TasksSection groupId={group.id} />
+        </section>
         <aside className="flex flex-col gap-4">
           <InviteCard group={group} />
           <MembersCard groupId={group.id} />

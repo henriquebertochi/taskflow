@@ -68,6 +68,7 @@ Todas as rotas respondem erros no mesmo formato:
 | 409 | `EMAIL_TAKEN` | E-mail já cadastrado |
 | 403 | `FORBIDDEN` | Ação permitida só a quem criou o grupo |
 | 404 | `INVALID_INVITE` | "Convite inválido ou expirado" (código inexistente ou substituído) |
+| 404 | `TASK_NOT_FOUND` | "Tarefa não encontrada" (inexistente ou de outro grupo) |
 | 404 | `GROUP_NOT_FOUND` | "Grupo não encontrado": não existe ou o usuário não é integrante |
 | 404 | `NOT_FOUND` | Rota inexistente |
 | 500 | `INTERNAL_ERROR` | Erro inesperado |
@@ -97,6 +98,21 @@ recebe `404 GROUP_NOT_FOUND`, a mesma resposta de um grupo inexistente.
 | POST | `/groups/:id/invite` | ✓ (criador) | Gera um novo código → `{ inviteCode }`; o anterior deixa de funcionar |
 | GET | `/invites/:code` | — | `{ group: { id, name, memberCount } }` para a tela de convite, mesmo sem login |
 | POST | `/invites/:code/join` | ✓ | Entra no grupo → `{ group: { id, name }, joined }` (`joined: false` se já era integrante) |
+
+### Tarefas (RF07)
+
+| Método | Rota | Descrição |
+|---|---|---|
+| GET | `/groups/:id/tasks` | Tarefas do grupo, por prazo |
+| POST | `/groups/:id/tasks` | `{ title, description?, assigneeId?, dueDate }` → 201 `{ task }`, sempre com status `todo` |
+| PUT | `/groups/:id/tasks/:taskId` | Mesmo corpo do POST → `{ task }` |
+| DELETE | `/groups/:id/tasks/:taskId` | → 204 |
+
+Tarefa: `{ id, groupId, title, description, status, dueDate, assignee: { id, name } | null, overdue, createdAt, updatedAt }`.
+`dueDate` é `AAAA-MM-DD`. Regras: título (até 120) e prazo obrigatórios; `assigneeId: null` = "Sem
+responsável"; responsável fora do grupo → `400` em `fields.assigneeId`; prazo passado → `400` em
+`fields.dueDate` (na edição, o prazo atual pode ser mantido mesmo vencido). "Hoje" segue o fuso
+`APP_TIMEZONE` (padrão `America/Sao_Paulo`).
 
 O link de convite é `${APP_URL}/convite/<inviteCode>`. Sem login, a tela mostra o grupo e leva ao
 login ou cadastro, que voltam ao convite em seguida.

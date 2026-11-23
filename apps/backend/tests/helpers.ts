@@ -29,3 +29,11 @@ export async function createGroup(user: TestUser, name = "Trabalho de PDS II") {
   const res = await user.post("/api/groups", { name }).expect(201);
   return res.body.group as { id: number; name: string; inviteCode: string };
 }
+
+// "Hoje" no mesmo fuso do backend (APP_TIMEZONE), deslocado em dias, como AAAA-MM-DD.
+export function day(offset = 0) {
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
+  const d = new Date(`${today}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + offset);
+  return d.toISOString().slice(0, 10);
+}
