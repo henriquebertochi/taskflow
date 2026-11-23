@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { requireAuth } from "../../middleware/auth.js";
-import { requireGroupMember } from "../../middleware/group-access.js";
+import { requireGroupCreator, requireGroupMember } from "../../middleware/group-access.js";
 import { createGroupSchema } from "./groups.schemas.js";
 import * as groups from "./groups.service.js";
 
@@ -21,4 +21,12 @@ groupsRouter.get("/", async (req, res) => {
 
 groupsRouter.get("/:id", async (req, res) => {
   res.json({ group: groups.publicGroup(req.group!) });
+});
+
+groupsRouter.get("/:id/members", async (req, res) => {
+  res.json({ members: await groups.listMembers(req.group!.id) });
+});
+
+groupsRouter.post("/:id/invite", requireGroupCreator, async (req, res) => {
+  res.json({ inviteCode: await groups.regenerateInviteCode(req.group!.id) });
 });

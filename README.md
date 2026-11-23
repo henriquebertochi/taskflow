@@ -67,6 +67,7 @@ Todas as rotas respondem erros no mesmo formato:
 | 401 | `UNAUTHENTICATED` | Rota protegida sem token ou com sessão expirada |
 | 409 | `EMAIL_TAKEN` | E-mail já cadastrado |
 | 403 | `FORBIDDEN` | Ação permitida só a quem criou o grupo |
+| 404 | `INVALID_INVITE` | "Convite inválido ou expirado" (código inexistente ou substituído) |
 | 404 | `GROUP_NOT_FOUND` | "Grupo não encontrado": não existe ou o usuário não é integrante |
 | 404 | `NOT_FOUND` | Rota inexistente |
 | 500 | `INTERNAL_ERROR` | Erro inesperado |
@@ -88,6 +89,18 @@ recebe `404 GROUP_NOT_FOUND`, a mesma resposta de um grupo inexistente.
 | GET | `/groups` | `{ groups: [{ id, name, description, role, memberCount, createdAt }] }`, só os grupos do usuário |
 | GET | `/groups/:id` | `{ group: { id, name, description, inviteCode, role, createdAt } }` |
 
+### Convites e integrantes (RF06)
+
+| Método | Rota | Auth | Descrição |
+|---|---|---|---|
+| GET | `/groups/:id/members` | ✓ | `{ members: [{ id, name, role, joinedAt }] }`, criador primeiro |
+| POST | `/groups/:id/invite` | ✓ (criador) | Gera um novo código → `{ inviteCode }`; o anterior deixa de funcionar |
+| GET | `/invites/:code` | — | `{ group: { id, name, memberCount } }` para a tela de convite, mesmo sem login |
+| POST | `/invites/:code/join` | ✓ | Entra no grupo → `{ group: { id, name }, joined }` (`joined: false` se já era integrante) |
+
+O link de convite é `${APP_URL}/convite/<inviteCode>`. Sem login, a tela mostra o grupo e leva ao
+login ou cadastro, que voltam ao convite em seguida.
+
 ## Frontend (`apps/frontend`)
 
 React 19 + TypeScript + Vite, Tailwind v4 e shadcn/ui (componentes copiados para
@@ -95,7 +108,7 @@ React 19 + TypeScript + Vite, Tailwind v4 e shadcn/ui (componentes copiados para
 Vitest, Testing Library e MSW (`npm test -w @taskflow/frontend`).
 
 Rotas: `/login`, `/cadastro`, `/esqueci-senha`, `/redefinir-senha?token=…` (caminho fixo, é o link
-do e-mail) e as protegidas `/` (Meus grupos), `/grupos/novo` e `/grupos/:id`.
+do e-mail) `/convite/:código` e as protegidas `/` (Meus grupos), `/grupos/novo` e `/grupos/:id`.
 
 **Design system centralizado** — ainda sem specs de design, então tudo é neutro e mora em dois lugares:
 
