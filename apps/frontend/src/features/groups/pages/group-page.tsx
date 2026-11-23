@@ -58,11 +58,11 @@ export function GroupPage() {
         <h1 className="text-2xl font-semibold break-words">{group.name}</h1>
         {group.description && <p className="whitespace-pre-line text-muted-foreground">{group.description}</p>}
       </div>
-      <div className="grid gap-6 lg:grid-cols-[1fr_18rem]">
+      <div className="grid gap-6 xl:grid-cols-[1fr_16rem]">
         <section aria-label="Tarefas" className="min-w-0">
           <TasksSection groupId={group.id} />
         </section>
-        <aside className="flex flex-col gap-4">
+        <aside className="grid content-start gap-4 sm:grid-cols-2 xl:grid-cols-1">
           <InviteCard group={group} />
           <MembersCard groupId={group.id} />
         </aside>

@@ -104,3 +104,20 @@ export async function deleteTask(groupId: number, taskId: number) {
   const { rowCount } = await pool.query("DELETE FROM tasks WHERE id = $1 AND group_id = $2", [taskId, groupId]);
   if (!rowCount) throw taskNotFound();
 }
+
+// Resumo do topo do quadro (RF08): % concluída e quantas estão atrasadas.
+export function summarize(list: Task[]) {
+  const total = list.length;
+  const done = list.filter((t) => t.status === "done").length;
+  const overdue = list.filter((t) => t.overdue).length;
+  return { total, done, overdue, percentDone: total === 0 ? 0 : Math.round((done * 100) / total) };
+}
+
+export async function updateStatus(groupId: number, taskId: number, status: TaskStatus) {
+  const { rowCount } = await pool.query(
+    "UPDATE tasks SET status = $1, updated_at = now() WHERE id = $2 AND group_id = $3",
+    [status, taskId, groupId],
+  );
+  if (!rowCount) throw taskNotFound();
+  return getTask(groupId, taskId);
+}

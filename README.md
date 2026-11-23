@@ -103,7 +103,7 @@ recebe `404 GROUP_NOT_FOUND`, a mesma resposta de um grupo inexistente.
 
 | Método | Rota | Descrição |
 |---|---|---|
-| GET | `/groups/:id/tasks` | Tarefas do grupo, por prazo |
+| GET | `/groups/:id/tasks` | `{ tasks, summary: { total, done, overdue, percentDone } }`, tarefas por prazo |
 | POST | `/groups/:id/tasks` | `{ title, description?, assigneeId?, dueDate }` → 201 `{ task }`, sempre com status `todo` |
 | PUT | `/groups/:id/tasks/:taskId` | Mesmo corpo do POST → `{ task }` |
 | DELETE | `/groups/:id/tasks/:taskId` | → 204 |
@@ -113,6 +113,17 @@ Tarefa: `{ id, groupId, title, description, status, dueDate, assignee: { id, nam
 responsável"; responsável fora do grupo → `400` em `fields.assigneeId`; prazo passado → `400` em
 `fields.dueDate` (na edição, o prazo atual pode ser mantido mesmo vencido). "Hoje" segue o fuso
 `APP_TIMEZONE` (padrão `America/Sao_Paulo`).
+
+### Quadro e progresso (RF08)
+
+| Método | Rota | Descrição |
+|---|---|---|
+| PATCH | `/groups/:id/tasks/:taskId/status` | `{ status: "todo" \| "in_progress" \| "done" }` → `{ task }` |
+
+`overdue` (atrasada) = prazo antes de hoje e status diferente de `done`. `percentDone` é a % de
+tarefas concluídas, arredondada. No frontend o quadro aplica a mudança de status na hora e, se a
+API recusar, devolve o cartão à coluna anterior com uma mensagem de erro; o destaque "Atrasada" e o
+resumo do topo são recalculados no navegador com a mesma regra, para atualizarem na hora.
 
 O link de convite é `${APP_URL}/convite/<inviteCode>`. Sem login, a tela mostra o grupo e leva ao
 login ou cadastro, que voltam ao convite em seguida.
