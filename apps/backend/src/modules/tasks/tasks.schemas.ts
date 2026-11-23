@@ -33,3 +33,7 @@ export const taskInputSchema = z.object({
 });
 
 export type TaskInput = z.infer<typeof taskInputSchema>;
+
+export const statusSchema = z.object({
+  status: z.enum(["todo", "in_progress", "done"], { error: "Status inválido" }),
+});

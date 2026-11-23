@@ -1,5 +1,5 @@
 import { Router, type Request } from "express";
-import { taskInputSchema } from "./tasks.schemas.js";
+import { statusSchema, taskInputSchema } from "./tasks.schemas.js";
 import * as tasks from "./tasks.service.js";
 
 // Montado em /groups/:id/tasks, depois de requireAuth e requireGroupMember.
@@ -11,8 +11,10 @@ function taskId(req: Request) {
   return Number(raw);
 }
 
+// Tarefas e resumo do progresso (RF08).
 tasksRouter.get("/", async (req, res) => {
-  res.json({ tasks: await tasks.listTasks(req.group!.id) });
+  const list = await tasks.listTasks(req.group!.id);
+  res.json({ tasks: list, summary: tasks.summarize(list) });
 });
 
 tasksRouter.post("/", async (req, res) => {
@@ -29,4 +31,10 @@ tasksRouter.put("/:taskId", async (req, res) => {
 tasksRouter.delete("/:taskId", async (req, res) => {
   await tasks.deleteTask(req.group!.id, taskId(req));
   res.status(204).end();
+});
+
+tasksRouter.patch("/:taskId/status", async (req, res) => {
+  const id = taskId(req);
+  const { status } = statusSchema.parse(req.body ?? {});
+  res.json({ task: await tasks.updateStatus(req.group!.id, id, status) });
 });

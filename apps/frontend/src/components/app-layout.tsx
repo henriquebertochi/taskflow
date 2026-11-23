@@ -52,7 +52,7 @@ export function AppLayout() {
           </DropdownMenu>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-6xl flex-1 p-4 sm:p-6">
+      <main className="mx-auto w-full max-w-7xl flex-1 p-4 sm:p-6">
         <Outlet />
       </main>
     </div>

@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { groupKeys, groupsApi } from "@/lib/api/groups"
 import { type Task, taskKeys, tasksApi } from "@/lib/api/tasks"
+import { summarize } from "../board"
 import { DeleteTaskDialog } from "./delete-task-dialog"
-import { TaskCard } from "./task-card"
+import { ProgressSummary } from "./progress-summary"
+import { TaskBoard } from "./task-board"
 import { TaskFormDialog } from "./task-form-dialog"
 
-// Tarefas do grupo (RF07): criar, editar e excluir.
+// Quadro de tarefas do grupo: criar, editar e excluir (RF07), status e progresso (RF08).
 export function TasksSection({ groupId }: { groupId: number }) {
   const tasksQuery = useQuery({ queryKey: taskKeys.list(groupId), queryFn: () => tasksApi.list(groupId) })
   const membersQuery = useQuery({ queryKey: groupKeys.members(groupId), queryFn: () => groupsApi.members(groupId) })
@@ -31,7 +33,7 @@ export function TasksSection({ groupId }: { groupId: number }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-lg font-semibold">Tarefas</h2>
+        <h2 className="text-lg font-semibold">Quadro de tarefas</h2>
         {tasks && tasks.length > 0 && newTaskButton}
       </div>
 
@@ -50,13 +52,10 @@ export function TasksSection({ groupId }: { groupId: number }) {
           action={newTaskButton}
         />
       ) : (
-        <ul className="grid gap-3 sm:grid-cols-2">
-          {tasks!.map((task) => (
-            <li key={task.id}>
-              <TaskCard task={task} onEdit={openEdit} onDelete={setDeleting} />
-            </li>
-          ))}
-        </ul>
+        <>
+          <ProgressSummary summary={summarize(tasks!)} />
+          <TaskBoard groupId={groupId} tasks={tasks!} onEdit={openEdit} onDelete={setDeleting} />
+        </>
       )}
 
       <TaskFormDialog
